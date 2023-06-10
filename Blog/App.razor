@@ -1,12 +1,64 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿@inject IBlogCache _blogCache
+
+@using System.Reflection
+
+<Router AppAssembly="@typeof(App).Assembly">
+
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
+
     <NotFound>
         <PageTitle>Not found</PageTitle>
         <LayoutView Layout="@typeof(MainLayout)">
             <p role="alert">Sorry, there's nothing at this address.</p>
         </LayoutView>
     </NotFound>
+
 </Router>
+
+@code {
+    private const string BlogNamespace = "Blog.Components.Blogs";
+
+    protected override Task OnInitializedAsync()
+    {
+        // Get all types in the assembly
+        List<Type> types = Assembly.GetExecutingAssembly().GetTypes().ToList();
+        var blogs = types.Where(t => t.Namespace == BlogNamespace).ToList();
+
+        blogs.ForEach(blog =>
+        {
+            BlogDto blogDto = new BlogDto
+            {
+                URL = GetBlogURL(blog.Name),
+                BlogContentComponentType = blog
+            };
+
+            _blogCache.SetItem(blogDto.URL, blogDto);
+        });
+
+        return base.OnInitializedAsync();
+    }
+
+    string GetBlogURL(string blogTypeName)
+    {
+        // Allocate the lenght of the name + the new hyphens to be added before the capital letters
+        StringBuilder builder = new StringBuilder(blogTypeName.Length + blogTypeName.Count(char.IsUpper));
+
+        foreach (char currentChar in blogTypeName)
+        {
+            if (char.IsUpper(currentChar))
+            {
+                if (builder.Length > 0 && builder[builder.Length - 1] != '-')
+                    builder.Append('-');
+
+                builder.Append(char.ToLower(currentChar));
+            }
+            else
+                builder.Append(currentChar);
+        }
+
+        return builder.ToString();
+    }
+}

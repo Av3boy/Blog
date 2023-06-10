@@ -1,0 +1,20 @@
+﻿@page "/blog/{blogName}"
+
+@inject IBlogCache _blogCache
+
+<DynamicComponent Type="@typeof(Blog.Components.Blogs.Test)" />
+
+@code {
+    [Parameter]
+    public string? BlogName { get; set; }
+
+    private BlogDto? BlogDto { get; set; } = new();
+
+    protected override Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(BlogName))
+            BlogDto = _blogCache.GetBlog(BlogName!);
+
+        return base.OnInitializedAsync();
+    }
+}

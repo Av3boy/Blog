@@ -26,7 +26,9 @@ public class Program
     private static bool Convert(string file, out string razorFile)
     {
         // Get new razor file path
-        razorFile = $"{Path.GetFileNameWithoutExtension(file)}.razor";
+        string fileName = string.Concat(Path.GetFileNameWithoutExtension(file), ".razor");
+        razorFile = string.Concat(fileName[0].ToString().ToUpper(), fileName.AsSpan(1));
+
         string razorFilePath = Path.Combine(_razorPath, razorFile);
 
         // Get new razor component contents
