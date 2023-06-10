@@ -6,7 +6,7 @@ namespace Blog.DependencyInjection.Services
     public class BlogCache : IBlogCache
     {
         private readonly IMemoryCache _memoryCache;
-        private readonly HashSet<string> _blogNameKeys;
+        private readonly HashSet<string> _blogUrlKeys;
 
         /// <summary>
         /// 
@@ -15,26 +15,26 @@ namespace Blog.DependencyInjection.Services
         public BlogCache(IMemoryCache memoryCache)
         {
             _memoryCache = memoryCache;
-            _blogNameKeys = new HashSet<string>();
+            _blogUrlKeys = new HashSet<string>();
         }
 
         /// <inheritdoc />
-        public BlogDto? GetBlog(string blogName)
+        public BlogDto? GetBlog(string blogUrl)
         {
-            return _memoryCache.Get<BlogDto>(blogName);
+            return _memoryCache.Get<BlogDto>(blogUrl);
         }
 
         /// <inheritdoc />
-        public void SetItem(string blogName, BlogDto blog)
+        public void SetItem(string blogUrl, BlogDto blog)
         {
-            _memoryCache.Set(blogName, blog);
-            _blogNameKeys.Add(blogName);
+            _memoryCache.Set(blogUrl, blog);
+            _blogUrlKeys.Add(blogUrl);
         }
 
         /// <inheritdoc />
         public IEnumerable<BlogDto> GetAllBlogs()
         {
-            foreach (var key in _blogNameKeys)
+            foreach (var key in _blogUrlKeys)
             {
                 _memoryCache.TryGetValue(key, out BlogDto? blog);
                 yield return blog!;
