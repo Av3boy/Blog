@@ -2,13 +2,19 @@
 
 @inject IBlogCache _blogCache
 
-<DynamicComponent Type="@typeof(Blog.Components.Blogs.Test)" />
+@if (BlogDto is null)
+{
+    <p>Blog not found</p>
+    return;
+}
+
+<DynamicComponent Type="@BlogDto!.BlogContentComponentType" />
 
 @code {
     [Parameter]
     public string? BlogName { get; set; }
 
-    private BlogDto? BlogDto { get; set; } = new();
+    private BlogDto? BlogDto { get; set; } = default!;
 
     protected override Task OnInitializedAsync()
     {
