@@ -1,0 +1,10 @@
+{
+  "test.md": {
+    "title": "Creating blazor pages from static resources",
+    "date": "2017-01-01",
+    "author": "Antti Veikkolainen",
+    "tags": [
+      ".net", "blazor"
+    ]
+  }
+}

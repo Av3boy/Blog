@@ -27,12 +27,17 @@
         List<Type> types = Assembly.GetExecutingAssembly().GetTypes().ToList();
         var blogs = types.Where(t => t.Namespace == BlogNamespace).ToList();
 
+        // TODO Get blog details from json.
+
         blogs.ForEach(blog =>
         {
             BlogDto blogDto = new BlogDto
             {
                 URL = GetBlogURL(blog.Name),
-                BlogContentComponentType = blog
+                BlogContentComponentType = blog,
+                Title = "asd", 
+                PublishDate = DateTime.Now, 
+                Tags = new List<string> { "asd", "asd" }
             };
 
             _blogCache.SetItem(blogDto.URL, blogDto);
