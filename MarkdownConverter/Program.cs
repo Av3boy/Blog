@@ -5,9 +5,9 @@ namespace MarkdownConverter;
 
 public class Program
 {
-    private static readonly string _path = Path.Combine(Environment.CurrentDirectory, @"..\..\..\..");
-    private static readonly string _blogPath = Path.Combine(_path, @"Blog\Blogs");
-    private static readonly string _razorPath = Path.Combine(_path, @"Blog\Blogs\Components");
+    public static readonly string Path = System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\..");
+    public static readonly string BlogPath = System.IO.Path.Combine(Path, @"Blog\Blogs");
+    public static readonly string RazorPath = System.IO.Path.Combine(Path, @"Blog\Blogs\Components");
 
     /// <summary>
     ///     Marks the entry point of the application.
@@ -18,7 +18,7 @@ public class Program
     public static int Main()
     {
         // Get  the markdown files.
-        var files = Directory.GetFiles(_blogPath, "*.md");
+        var files = Directory.GetFiles(BlogPath, "*.md");
 
         // Convert markdown files to razor components to be consumed by the blog app.
         foreach (var file in files)
@@ -35,7 +35,7 @@ public class Program
     /// </summary>
     /// <param name="markdownFileWithPath">The file to be converted.</param>
     /// <param name="razorFileName">The name of the newly created razor file.</param>
-    private static void ConvertMarkdownToRazor(string markdownFileWithPath, out string razorFileName)
+    public static void ConvertMarkdownToRazor(string markdownFileWithPath, out string razorFileName)
     {
         string markdownContents = GetMarkdownContents(markdownFileWithPath);
         string htmlContents = GetHtmlContents(markdownContents);
@@ -51,7 +51,7 @@ public class Program
     /// <returns>
     ///     The HTML representation of the given <paramref name="markdownContents"/>.
     /// </returns>
-    private static string GetHtmlContents(string markdownContents)
+    public static string GetHtmlContents(string markdownContents)
         => Markdig.Markdown.ToHtml(markdownContents);
 
     /// <summary>
@@ -59,7 +59,7 @@ public class Program
     /// </summary>
     /// <param name="htmlContents">The contents of the new razor component.</param>
     /// <param name="razorFileWithPath">The razor file with a path to be created.</param>
-    private static void CreateRazorFile(string htmlContents, string razorFileWithPath)
+    public static void CreateRazorFile(string htmlContents, string razorFileWithPath)
     {
         using (StreamWriter sw = new StreamWriter(razorFileWithPath, false))
         sw.Write(htmlContents);
@@ -73,11 +73,11 @@ public class Program
     /// <returns>
     ///     The razor files name with a path.
     /// </returns>
-    private static string GetRazorFileNameWithPath(string markdownFile, out string razorFile)
+    public static string GetRazorFileNameWithPath(string markdownFile, out string razorFile)
     {
-        string markdownFileName = Path.GetFileNameWithoutExtension(markdownFile);
-        razorFile = string.Concat(MdFileNameToRazorFileNae(markdownFileName), ".razor");
-        return Path.Combine(_razorPath, razorFile);
+        string markdownFileName = System.IO.Path.GetFileNameWithoutExtension(markdownFile);
+        razorFile = string.Concat(MdFileNameToRazorFileName(markdownFileName), ".razor");
+        return System.IO.Path.Combine(RazorPath, razorFile);
     }
 
     /// <summary>
@@ -87,7 +87,7 @@ public class Program
     /// <returns>
     ///     The contents of the markdown file.
     /// </returns>
-    private static string GetMarkdownContents(string markdownPath)
+    public static string GetMarkdownContents(string markdownPath)
     {
         using (StreamReader streamReader = new StreamReader(markdownPath, Encoding.UTF8))
         return streamReader.ReadToEnd();
@@ -104,7 +104,7 @@ public class Program
     /// <returns>
     ///     The converted 'Camel-Case' razor file name.
     /// </returns>
-    private static string MdFileNameToRazorFileNae(string markdownFileName)
+    public static string MdFileNameToRazorFileName(string markdownFileName)
     {
         StringBuilder builder = new StringBuilder();
 

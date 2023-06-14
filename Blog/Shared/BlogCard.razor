@@ -1,0 +1,21 @@
+﻿<a href="@Blog.URL" class="blog-card">
+
+    <h3>@Blog.Title</h3>
+    <p>@Blog.PublishDate</p>
+
+    <p>@Blog.Author</p>
+    <p>@Blog.Description</p>
+
+    <div>
+        @foreach (var tag in Blog.Tags)
+        {
+            <p class="tag">@tag</p>
+        }
+    </div>
+
+</a>
+
+@code {
+    [Parameter]
+    public BlogDto Blog { get; set; } = new();
+}

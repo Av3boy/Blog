@@ -1,10 +1,13 @@
-{
-  "test.md": {
-    "title": "Creating blazor pages from static resources",
-    "date": "2017-01-01",
-    "author": "Antti Veikkolainen",
-    "tags": [
-      ".net", "blazor"
-    ]
+[
+  {
+    "Author": "Antti Veikkolainen",
+    "Description": "Learn how you can load markdown files as blazor components and render the blazor components automatically.",
+    "PublishDate": "2017-01-01",
+    "Tags": [
+      ".net",
+      "blazor"
+    ],
+    "Title": "Creating Blazor Website From Static Resources",
+    "URL": "creating-blazor-website-from-static-resources"
   }
-}
+]

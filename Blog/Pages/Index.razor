@@ -1,3 +1,36 @@
 ﻿@page "/"
+@inject IBlogCache _blogCache
 
-@* TODO: List all blogs *@
+@{
+    if (_blogs.Count() <= 0)
+    {
+        <p>No blogs found.</p>
+    }
+    else
+    {
+        foreach (var blog in _blogs)
+        {
+            <BlogCard Blog="@blog" />
+        }
+    }
+
+}
+
+@code {
+    private IEnumerable<BlogDto> _blogs { get; set; } = Enumerable.Empty<BlogDto>();
+
+    protected override Task OnInitializedAsync()
+    {
+        var enumerator = _blogCache.GetAllBlogs().GetEnumerator();
+
+        while(enumerator.MoveNext())
+        {
+            _blogs.Append(enumerator.Current);
+        }
+
+        StateHasChanged();
+
+        return base.OnInitializedAsync();
+    }
+}
+

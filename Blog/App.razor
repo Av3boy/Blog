@@ -19,31 +19,33 @@
 </Router>
 
 @code {
-    private const string BlogNamespace = "Blog.Components.Blogs";
+    private const string _blogNamespace = "Blog.Blogs.Components";
+    private string _configPath = Path.Combine(Environment.CurrentDirectory, @"Blogs\config.json");
 
-    protected override Task OnInitializedAsync()
+    /// <inheritdoc />
+    protected override async Task OnInitializedAsync()
     {
         // Get all types in the assembly
         List<Type> types = Assembly.GetExecutingAssembly().GetTypes().ToList();
-        var blogs = types.Where(t => t.Namespace == BlogNamespace).ToList();
+        var blogs = types.Where(t => t.Namespace == _blogNamespace).ToList();
 
-        // TODO Get blog details from json.
+        // Get blog details from json.
+        using System.IO.FileStream reader = File.OpenRead(_configPath);
+        List<BlogDto> config = (await System.Text.Json.JsonSerializer.DeserializeAsync<List<BlogDto>>(reader))!;
 
         blogs.ForEach(blog =>
         {
-            BlogDto blogDto = new BlogDto
-            {
-                URL = GetBlogURL(blog.Name),
-                BlogContentComponentType = blog,
-                Title = "asd", 
-                PublishDate = DateTime.Now, 
-                Tags = new List<string> { "asd", "asd" }
-            };
+            string blogURL = GetBlogURL(blog.Name);
 
-            _blogCache.SetItem(blogDto.URL, blogDto);
+            BlogDto? blogInfo = config.FirstOrDefault(i => i.URL.Equals(blogURL));
+            if (blogInfo is null)
+                throw new InvalidOperationException($"A blog with {blogURL} could not be found." +
+                                                     "Make sure the url of the blog is correct in the config.json.");
+
+            blogInfo!.BlogContentComponentType = blog;
+
+            _blogCache.SetItem(blogURL, blogInfo);
         });
-
-        return base.OnInitializedAsync();
     }
 
     string GetBlogURL(string blogTypeName)

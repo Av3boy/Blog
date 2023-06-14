@@ -6,10 +6,13 @@
     public class BlogDto
     {
         /// <summary>Gets or sets the Title of the blog.</summary>
-        public required string Title { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+
+        /// <summary>Gets or sets a short description about the contents of the blog.</summary>
+        public string? Description { get; set; } = string.Empty;
 
         /// <summary>Gets or sets the date when the Date was published.</summary>
-        public required DateTime PublishDate { get; set; }
+        public DateOnly PublishDate { get; set; }
 
         /// <summary>Gets or sets the name of the person who wrote the blog.</summary>
         public string Author { get; set; } = "Antti Veikkolainen";
