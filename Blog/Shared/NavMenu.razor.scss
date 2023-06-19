@@ -1,48 +1,27 @@
-// Variables
-$breakpoint: 768px;
-$navbar-height: 60px;
+.header {
+    background-color: #f1f1f1;
+    padding: 30px;
+    text-align: center;
+}
 
-// Styles
 .navbar ::deep {
-    position: sticky;
-    top: 0;
-    z-index: 999;
-    background-color: #fff;
-    padding: 10px;
+    position: absolute;
+    background-color: #333;
+    width: 100%;
 
-    @media (max-width: $breakpoint) {
-        &.collapsed {
-            padding: 10px 0;
-            height: $navbar-height;
-            overflow: hidden;
-        }
-    }
+    a {
+        color: white;
+        text-decoration: none;
 
-    .nav {
-        display: flex;
-        justify-content: flex-end;
-
-        @media (max-width: $breakpoint) {
-            flex-direction: column;
-            align-items: flex-end;
-            margin-top: 10px;
-
-            &.collapsed {
-                display: none;
-            }
+        :hover {
+            background-color: #ddd;
+            color: black;
         }
 
-        .nav-item {
-            margin-left: 10px;
-
-            a {
-                text-decoration: none;
-                color: #000;
-
-                &:hover {
-                    text-decoration: underline;
-                }
-            }
+        .active {
+            background-color: #04AA6D;
+            color: white;
         }
     }
 }
+

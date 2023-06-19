@@ -9,9 +9,9 @@
             <NavMenuItem Visible="@(_isNavMenuCollapsed is false)" Title="@blog.Title" Link="@blog.URL" />
         }
     
-        <a href="javascript:void(0);" class="icon" @onclick="ToggleNavMenu">
+        <button class="icon" @onclick="ToggleNavMenu">
           <i class="oi oi-menu"></i>
-        </a>
+        </button>
     </nav>
 </header>
 

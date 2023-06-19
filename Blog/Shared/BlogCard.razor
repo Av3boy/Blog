@@ -1,21 +1,27 @@
-﻿<a href="@Blog.URL" class="blog-card">
+﻿@inject NavigationManager _navigationManager
+
+<div tabindex="0" role="link" class="blog-card" @onclick="@OpenBlog">
 
     <h3>@Blog.Title</h3>
     <p>@Blog.PublishDate</p>
 
-    <p>@Blog.Author</p>
     <p>@Blog.Description</p>
 
-    <div>
+    <div class="tag-container">
         @foreach (var tag in Blog.Tags)
         {
             <p class="tag">@tag</p>
         }
     </div>
 
-</a>
+</div>
 
 @code {
     [Parameter]
     public BlogDto Blog { get; set; } = new();
+
+    private void OpenBlog()
+    {
+        _navigationManager.NavigateTo(Blog.URL);
+    }
 }

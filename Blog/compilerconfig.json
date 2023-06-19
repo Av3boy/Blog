@@ -1,14 +1,14 @@
 ﻿[
   {
-    "outputFile": "Shared/BlogCard.razor.css",
-    "inputFile": "Shared/BlogCard.razor.scss"
-  },
-  {
     "outputFile": "Shared/NavMenuItem.razor.css",
     "inputFile": "Shared/NavMenuItem.razor.scss"
   },
   {
     "outputFile": "Shared/NavMenu.razor.css",
     "inputFile": "Shared/NavMenu.razor.scss"
+  },
+  {
+    "outputFile": "Shared/BlogCard.razor.css",
+    "inputFile": "Shared/BlogCard.razor.scss"
   }
 ]

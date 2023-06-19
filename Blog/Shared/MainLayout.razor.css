@@ -22,6 +22,10 @@
     padding-top: 100px;
 }
 
+.page {
+    min-height: 100vh;
+}
+
 @media (max-width: 640.98px) {
     .top-row:not(.auth) {
         display: none;
