@@ -1,48 +1,39 @@
 ﻿@inject IBlogCache _blogCache
 
-<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Blog</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
-
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-
+<header class="navbar">
+    <nav class="nav @NavMenuCssClass">
+        <NavMenuItem Visible="true" Title="Home" Icon="oi oi-home" />
+    
         @foreach (var blog in _blogs)
         {
-            <NavMenuItem Title="@blog.Title" Link="@blog.URL" />
+            <NavMenuItem Visible="@(_isNavMenuCollapsed is false)" Title="@blog.Title" Link="@blog.URL" />
         }
-
+    
+        <a href="javascript:void(0);" class="icon" @onclick="ToggleNavMenu">
+          <i class="oi oi-menu"></i>
+        </a>
     </nav>
-</div>
+</header>
 
 @code {
-    private bool collapseNavMenu = true;
+    private bool _isNavMenuCollapsed = true;
+    private string? NavMenuCssClass => _isNavMenuCollapsed ? "responsive " : null;
 
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
+    /// <summary>
+    /// 
+    /// </summary>
     private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-
-    private bool _isLoading = true;
+        => _isNavMenuCollapsed = !_isNavMenuCollapsed;
 
     private IEnumerable<BlogDto> _blogs { get; set; } = Enumerable.Empty<BlogDto>();
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     protected override Task OnInitializedAsync()
     {
-        _blogs = _blogCache.GetAllBlogs().ToList();
+        _blogs = _blogCache.GetAllBlogs();
 
         return base.OnInitializedAsync();
     }

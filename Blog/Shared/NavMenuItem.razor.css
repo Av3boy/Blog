@@ -1,0 +1,6 @@
+﻿.nav-link ::deep {
+  display: none;
+}
+.nav-link ::deep .is-visible {
+  display: block;
+}

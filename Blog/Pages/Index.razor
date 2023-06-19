@@ -21,14 +21,7 @@
 
     protected override Task OnInitializedAsync()
     {
-        var enumerator = _blogCache.GetAllBlogs().GetEnumerator();
-
-        while(enumerator.MoveNext())
-        {
-            _blogs.Append(enumerator.Current);
-        }
-
-        StateHasChanged();
+        _blogs = _blogCache.GetAllBlogs();
 
         return base.OnInitializedAsync();
     }

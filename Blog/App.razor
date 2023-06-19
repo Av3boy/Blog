@@ -2,6 +2,12 @@
 
 @using System.Reflection
 
+@if (_loading)
+{
+    <p>Loading...</p>
+    return;
+}
+
 <Router AppAssembly="@typeof(App).Assembly">
 
     <Found Context="routeData">
@@ -21,6 +27,8 @@
 @code {
     private const string _blogNamespace = "Blog.Blogs.Components";
     private string _configPath = Path.Combine(Environment.CurrentDirectory, @"Blogs\config.json");
+
+    private bool _loading { get; set; } = true;
 
     /// <inheritdoc />
     protected override async Task OnInitializedAsync()
@@ -46,6 +54,8 @@
 
             _blogCache.SetItem(blogURL, blogInfo);
         });
+
+        _loading = false;
     }
 
     string GetBlogURL(string blogTypeName)

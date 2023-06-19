@@ -1,8 +1,6 @@
-﻿<div class="nav-item px-3">
-    <NavLink class="nav-link" href="@Link">
-        <span class="@Icon" aria-hidden="true"></span> @Title
-    </NavLink>
-</div>
+﻿<NavLink class="@($"nav-link nav-item {_visiblity}")" href="@Link">
+    <span class="@Icon" aria-hidden="true"></span> @Title
+</NavLink>
 
 @code {
     [Parameter]
@@ -13,4 +11,9 @@
 
     [Parameter]
     public string? Icon { get; set; }
+
+    [Parameter]
+    public bool Visible { get; set; } = true;
+
+    private string _visiblity => Visible ? "is-visible" : string.Empty;
 }
