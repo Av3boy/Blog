@@ -1,0 +1,20 @@
+﻿<button class="navbar-toggler" type="button"
+        data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation" @onclick="Toggle">
+    <span class="navbar-toggler-icon"></span>
+</button>
+
+@code {
+    [Parameter]
+    public bool IsCollapsed { get; set; } = true;
+
+    [Parameter]
+    public EventCallback<bool> IsCollapsedChanged { get; set; }
+
+    private void Toggle()
+    {
+        IsCollapsed = !IsCollapsed;
+        IsCollapsedChanged.InvokeAsync(IsCollapsed);
+    }
+}

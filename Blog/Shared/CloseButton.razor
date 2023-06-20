@@ -1,0 +1,7 @@
+﻿<button type="button" class="btn-close" aria-label="Close" onclick="@OnClose.InvokeAsync()" />
+
+@code {
+    /// <summary>Gets or sets the event executed when the close button is pressed.</summary>
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+}

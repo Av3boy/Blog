@@ -2,12 +2,23 @@
   {
     "Author": "Antti Veikkolainen",
     "Description": "Learn how you can load markdown files as blazor components and render the blazor components automatically.",
-    "PublishDate": "2017-01-01",
+    "PublishDate": "2023-06-01",
     "Tags": [
       ".net",
       "blazor"
     ],
     "Title": "Creating Blazor Website From Static Resources",
     "URL": "creating-blazor-website-from-static-resources"
+  },
+  {
+    "Author": "Antti Veikkolainen",
+    "Description": "Lorem Ipsum et asd.",
+    "PublishDate": "2023-06-01",
+    "Tags": [
+      "efg",
+      "asd"
+    ],
+    "Title": "A test blog",
+    "URL": "my-test-blog"
   }
 ]

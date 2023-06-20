@@ -1,29 +1,80 @@
 ﻿@page "/"
 @inject IBlogCache _blogCache
 
-@{
-    if (_blogs.Count() <= 0)
-    {
-        <p>No blogs found.</p>
-    }
-    else
-    {
-        foreach (var blog in _blogs)
+@if (_tagFilters.Any())
+{
+    <div class="tag-container">
+        @foreach (var tag in _tagFilters)
         {
-            <BlogCard Blog="@blog" />
+            <span class="tag">
+                @tag
+                <CloseButton OnClose="@(() => RemoveTag(tag))" />
+            </span>
         }
-    }
 
+        <CloseButton OnClose="(() => RemoveTag(_tagFilters.ToArray()))" />
+    </div>
+}
+
+@if (_blogs.Count() <= 0)
+{
+    <p>No blogs found.</p>
+}
+else
+{
+    foreach (var blog in _blogs)
+    {
+        <BlogCard Blog="@blog" OnTagClicked="@((string tag) => FilterByTag(tag))" />
+    }
 }
 
 @code {
+    /// <summary>Gets or sets all the written blogs.</summary>
     private IEnumerable<BlogDto> _blogs { get; set; } = Enumerable.Empty<BlogDto>();
 
+    /// <summary>Gets or sets the tag filters by which the blogs are displayed.</summary>
+    private IEnumerable<string> _tagFilters { get; set; } = Enumerable.Empty<string>();
+
+    /// <summary><inheritdoc /></summary>
+    /// <remarks>
+    ///     Loads all the blogs from the cache.
+    /// </remarks>
+    /// <returns><inheritdoc /></returns>
     protected override Task OnInitializedAsync()
     {
         _blogs = _blogCache.GetAllBlogs();
-
         return base.OnInitializedAsync();
+    }
+
+    /// <summary>
+    ///     Filters the blogs by the given tags.
+    /// </summary>
+    /// <param name="tags">The tags to be displayed.</param>
+    private void FilterByTag(params string[] tags)
+    {
+        // TODO: Is tag already is _tagFilters.
+        // TODO: Display tags filtered by.
+
+        _blogs = _blogCache.GetBlogsByTag(tags);
+        
+        foreach (string tag in tags)
+            _tagFilters.Append(tag);
+        
+        StateHasChanged();
+    }
+
+    /// <summary>
+    ///     Removes the given tags from the filter. 
+    /// </summary>
+    /// <param name="tags">The tags to be removed from the filter.</param>
+    private void RemoveTag(params string[] tags)
+    {
+        _tagFilters = _tagFilters.Except(tags); 
+
+        if (_tagFilters.Count() <= 0)
+            _blogs = _blogCache.GetAllBlogs();
+        else
+             FilterByTag(_tagFilters.ToArray());
     }
 }
 

@@ -2,24 +2,41 @@
 
 @inject IBlogCache _blogCache
 
-@if (BlogDto is null)
+@if (_blog is null)
 {
     <p>Blog not found</p>
     return;
 }
 
-<DynamicComponent Type="@BlogDto!.BlogContentComponentType" />
+<div class="blog-info">
+    <h1>@_blog.Title</h1>
+
+    <span>
+        <img src="" />
+        @_blog.Author
+    </span>
+    <p>@_blog.PublishDate</p>
+</div>
+
+<hr />
+
+<DynamicComponent Type="@_blog!.BlogContentComponentType" />
 
 @code {
+    /// <summary>Gets or sets the URL of the blog from the route.</summary>
     [Parameter]
     public string? BlogURL { get; set; }
 
-    private BlogDto? BlogDto { get; set; } = default!;
+    /// <summary>Gets or sets the blog information.</summary>
+    private BlogDto? _blog { get; set; } = default!;
 
+    /// <summary><inheritdoc /></summary>
+    /// <remarks>Gets the blog information by the given blog url name.</remarks>
+    /// <returns><inheritdoc /></returns>
     protected override Task OnInitializedAsync()
     {
         if (!string.IsNullOrWhiteSpace(BlogURL))
-            BlogDto = _blogCache.GetBlog(BlogURL!);
+            _blog = _blogCache.GetBlog(BlogURL!);
 
         return base.OnInitializedAsync();
     }

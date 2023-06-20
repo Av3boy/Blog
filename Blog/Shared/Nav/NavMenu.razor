@@ -1,0 +1,50 @@
+﻿@inject IBlogCache _blogCache
+
+@* 
+    Bootstrap Nav Docs:
+    https://getbootstrap.com/docs/4.3/components/navbar/
+
+    Nav Item Icons:
+    https://icons.getbootstrap.com/
+*@
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light"
+     style="width: 100%; position: fixed;">
+
+    <NavMenuItem Title="Home" Icon="oi oi-home" />
+
+    <NavToggler @bind-IsCollapsed="_isCollapsed" />
+
+    <div class="collapse navbar-collapse @_classCollapsed" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+
+            @foreach (var blog in _blogs)
+            {
+                <NavMenuItem Title="@blog.Title" Link="@blog.URL" />
+            }
+
+        </ul>
+    </div>
+
+</nav>
+
+@code {
+    private bool _isCollapsed { get; set; } = true;
+
+    private string _classCollapsed => !_isCollapsed ? "show" : string.Empty;
+
+    /// <summary>Gets or sets all the blogs to be rendered in the navigation.</summary>
+    private IEnumerable<BlogDto> _blogs { get; set; } = Enumerable.Empty<BlogDto>();
+
+    /// <summary><inheritdoc /></summary>
+    /// <remarks>
+    ///     Retrieves all blogs from the cache to be rendered in the navigation.
+    /// </remarks>
+    /// <returns><inheritdoc /></returns>
+    protected override Task OnInitializedAsync()
+    {
+        _blogs = _blogCache.GetAllBlogs();
+
+        return base.OnInitializedAsync();
+    }
+}

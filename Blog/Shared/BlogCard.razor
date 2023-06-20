@@ -1,27 +1,41 @@
 ﻿@inject NavigationManager _navigationManager
 
-<div tabindex="0" role="link" class="blog-card" @onclick="@OpenBlog">
+<div class="blog-card">
 
-    <h3>@Blog.Title</h3>
-    <p>@Blog.PublishDate</p>
+    <div class="blog-details" tabindex="0" role="link" @onclick="@OpenBlog">
+        <h3>@Blog.Title</h3>
+        <p>@Blog.PublishDate</p>
 
-    <p>@Blog.Description</p>
+        <p>@Blog.Description</p>
+    </div>
 
     <div class="tag-container">
         @foreach (var tag in Blog.Tags)
         {
-            <p class="tag">@tag</p>
+            <button class="tag" @onclick="(() => FilterByTag(tag))">@tag</button>
         }
     </div>
 
 </div>
 
 @code {
+    /// <summary>Gets or sets a blog.</summary>
+    /// <remarks>Used to render the blog card on the front page.</remarks>
     [Parameter]
     public BlogDto Blog { get; set; } = new();
 
+    /// <summary>Gets or sets the event executed when a blog tag is clicked.</summary>
+    [Parameter]
+    public EventCallback<string> OnTagClicked { get; set; }
+
+    /// <summary>
+    ///     Invokes the <see cref="OnTagClicked" /> event with the tag that was clicked.
+    /// </summary>
+    /// <param name="tag">THe tag that was clicked.</param>
+    private void FilterByTag(string tag)
+        => OnTagClicked.InvokeAsync(tag);
+    
+    /// <summary>Navigates to the page containing the blog contents.</summary>
     private void OpenBlog()
-    {
-        _navigationManager.NavigateTo(Blog.URL);
-    }
+        => _navigationManager.NavigateTo(Blog.URL);
 }

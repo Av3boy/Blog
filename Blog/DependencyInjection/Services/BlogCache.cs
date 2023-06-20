@@ -9,9 +9,9 @@ namespace Blog.DependencyInjection.Services
         private readonly HashSet<string> _blogUrlKeys;
 
         /// <summary>
-        /// 
+        ///     Initializes the blog cache.
         /// </summary>
-        /// <param name="memoryCache"></param>
+        /// <param name="memoryCache">The memory cache object where the blogs are stored.</param>
         public BlogCache(IMemoryCache memoryCache)
         {
             _memoryCache = memoryCache;
@@ -38,6 +38,18 @@ namespace Blog.DependencyInjection.Services
             {
                 _memoryCache.TryGetValue(key, out BlogDto? blog);
                 yield return blog!;
+            }
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<BlogDto> GetBlogsByTag(params string[] tags)
+        {
+            foreach (var blog in GetAllBlogs())
+            {
+                if (blog.Tags.Any(tag => tags.Contains(tag)))
+                {
+                    yield return blog;
+                }
             }
         }
     }

@@ -10,5 +10,9 @@
   {
     "outputFile": "Shared/BlogCard.razor.css",
     "inputFile": "Shared/BlogCard.razor.scss"
+  },
+  {
+    "outputFile": "Shared/Nav/NavToggler.razor.css",
+    "inputFile": "Shared/Nav/NavToggler.razor.scss"
   }
 ]
